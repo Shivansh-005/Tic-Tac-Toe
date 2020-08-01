@@ -53,19 +53,18 @@ void checkColumn(){
     }
 }
 void checkDiagonal(){
-        if(matrix[0][0]==matrix[1][1] && matrix[1][1]==matrix[2][2]){
+        if(matrix[0][0]==matrix[1][1] && matrix[1][1]==matrix[2][2])
          {
              over=true;
              matrix[0][0]==pc?winner=pc:winner=player;
          }
-       if(matrix[0][2]==matrix[1][1] && matrix[2][0]==matrix[1][1])
+       else if(matrix[0][2]==matrix[1][1] && matrix[1][1]==matrix[2][0])
        {
            over=true;
            matrix[0][2]==pc?winner=pc:winner=player;
             return;
        }
-    
-}
+
 }
 void checkwin(){
     checkRow();
@@ -147,8 +146,8 @@ else
           {
                 cout<<"Please enter a valid choice!\n";
                 cin>>n;
-                row=n/3;
-                column=n%3;
+                row=n2/3;
+                column=n2%3;
                 cin.get();
           }
             matrix[row][column]=pc;
