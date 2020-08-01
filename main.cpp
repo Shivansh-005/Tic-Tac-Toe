@@ -5,6 +5,7 @@
 //
 #include <bits/stdc++.h>
 int turns=0;
+int mode;
 using namespace std;
 char player,pc;
 char winner='n';
@@ -72,6 +73,8 @@ void checkwin(){
     checkDiagonal();
 }
 void play(){
+if(mode)
+   {
     cout<<"Your turn, enter a number "<<"\n";
     int n;
     cin>>n;
@@ -87,17 +90,19 @@ void play(){
             column=n%3;
           cin.get();
       }
+       
     if(turns<9)
-    matrix[row][column]=player;
-    drawBoard();
-    checkwin();
-    turns++;
-    if(turns<9)
+    {
+       matrix[row][column]=player;
+        turns++;
+    }
+       drawBoard();
+       checkwin();
+    if(turns<9 && !over)
     {
         cout<<"CPU's turn, please wait...\n";
         pcTurn();
         checkwin();
-        drawBoard();
         turns++;
     }
     if(turns>=9)
@@ -105,24 +110,94 @@ void play(){
         over=true;
         return;
     }
+   }
+else
+    {
+        cout<<"Player 1's turn, please enter a choice\n";
+        int n;
+        cin>>n;
+        int row;
+        int column;
+        row=n/3;
+        column=n%3;
+        while(n<0 || n>8 || matrix[row][column]=='O' || matrix[row][column]=='X')
+         {
+            cout<<"Please enter a valid choice!\n";
+            cin>>n;
+            row=n/3;
+            column=n%3;
+            cin.get();
+        }
+            
+           if(turns<9)
+           {
+              matrix[row][column]=player;
+               turns++;
+          }
+        checkwin();
+        drawBoard();
+       if(turns<9 && !over)
+       {
+           cout<<"Player 2's turn, enter a choice\n";
+           int n2;
+           cin>>n2;
+           row=n2/3;
+        column=n2%3;
+        while(n2<0 || n2>8 || matrix[row][column]=='O' || matrix[row][column]=='X')
+          {
+                cout<<"Please enter a valid choice!\n";
+                cin>>n;
+                row=n/3;
+                column=n%3;
+                cin.get();
+          }
+            matrix[row][column]=pc;
+            turns++;
+            checkwin();
+       }
+        if(turns>=9)
+        {
+            over=true;
+            return;
+        }
+    }
 }
 int main(){
     cout<<"Welcome to the Game"<<"\n";
-    cout<<"Choose 'X' or 'O' by entering 1 or 2 respectively"<<"\n";
+    cout<<"Choose Multiplayer or CPU by entering 0 or 1\n";
+    cin>>mode;
+    while(mode<0 || mode>1)
+    {
+        cout<<"Please enter a valid choice!\n";
+        cin>>mode;
+        cin.get();
+    }
+    if(!mode)
+        cout<<"Player 1:Choose 'X' or 'O' by entering 1 or 2 respectively"<<"\n";
+    else
+        cout<<"Choose 'X' or 'O' by entering 1 or 2 respectively\n";
     int choice;
     cin>>choice;
-    if(choice<1 || choice>2)
-        cout<<"Please enter a valid choice!";
+    while(choice<1 || choice>2)
+       {
+           cout<<"Please enter a valid choice!\n";
+           cin>>choice;
+           cin.get();
+       }
     choice==1?player='X':player='O';
     player=='X'?pc='O':pc='X';
     while (!over) {
         drawBoard();
         play();
     }
-    if(winner==pc)
+    if(winner==pc && mode)
      cout<<"CPU"<<" Won!\n";
-    else if(winner==player)
+    else if(winner==player && mode)
      cout<<"You"<<" Won!\n";
+    else if (winner==player && !mode)
+     cout<<"Player 1"<<" Won!\n";
+    else if(winner==pc && !mode)
+     cout<<"Player 2"<<" Won!\n";
     else
-        cout<<"It's a draw!\n";
+     cout<<"It's a draw!\n";
 }
